@@ -1,4 +1,4 @@
-var QLearning = (function () {
+let QLearning = (function () {
   // s(playerPose + fruitPose + size + trail) = state of the current position
   // act(s) = best action so far
   // rew = instant reward of taking this step
@@ -6,23 +6,23 @@ var QLearning = (function () {
 
   // Q(s, act) += LR * (rew + DF*max(Q(s',*)) - Q(s,act))
 
-  var qTable = {};
-  var learningRate = 0.85; // Learning Rate
-  var discountFactor = 0.9; // Discount Factor of Future Rewards
-  var randomize = 0.05; // Randomization Rate on Action
+  let qTable = {};
+  let learningRate = 0.85; // Learning Rate
+  let discountFactor = 0.9; // Discount Factor of Future Rewards
+  let randomize = 0.05; // Randomization Rate on Action
 
-  var availableActions = ['up', 'down', 'left', 'right'];
+  let availableActions = ['up', 'down', 'left', 'right'];
 
-  var score = 0;
-  var missed = 0;
+  let score = 0;
+  let missed = 0;
 
-  var intervalID;
-  var defaultLoopsPerInterval = 1200;
+  let intervalID;
+  let defaultLoopsPerInterval = 1200;
 
-  var fullSetOfStates = false;
+  let fullSetOfStates = false;
 
 
-  var whichStateNow = function () {
+  let whichStateNow = function () {
     let tileCount = Snake.info.tileCount;
     let player = Snake.data.player;
 
@@ -40,7 +40,7 @@ var QLearning = (function () {
     while(fruitRelativePose.y < 0) fruitRelativePose.y += tileCount;
     while(fruitRelativePose.y > tileCount) fruitRelativePose.y -= tileCount;
 
-    var stateName = fruitRelativePose.x + ',' + fruitRelativePose.y;
+    let stateName = fruitRelativePose.x + ',' + fruitRelativePose.y;
       // + ',' + trail.length;
 
     const maxLength = (fullSetOfStates ? trail.length : 1);
@@ -60,14 +60,14 @@ var QLearning = (function () {
     return stateName;
   };
 
-  var whichTable = function (s) {
+  let whichTable = function (s) {
     if(qTable[s] == undefined ) {
       qTable[s] = { 'up':0, 'down':0, 'left':0, 'right':0 };
     }
     return qTable[s];
   }
 
-  var bestAction = function (s) {
+  let bestAction = function (s) {
     let q = whichTable(s);
 
     if(Math.random() < randomize){
@@ -94,20 +94,20 @@ var QLearning = (function () {
     return choseAction;
   }
 
-  var updateQTable = function (state0, state1, reward, act) {
-    var q0 = whichTable(state0);
-    var q1 = whichTable(state1);
+  let updateQTable = function (state0, state1, reward, act) {
+    let q0 = whichTable(state0);
+    let q1 = whichTable(state1);
 
-    var newValue = reward + discountFactor * Math.max(q1.up, q1.down, q1.left, q1.right) - q0[act];
+    let newValue = reward + discountFactor * Math.max(q1.up, q1.down, q1.left, q1.right) - q0[act];
     qTable[state0][act] = q0[act] + learningRate * newValue;
   }
 
   function Algorithm () {
-    var currentState = whichStateNow();
-    var action = bestAction(currentState);
+    let currentState = whichStateNow();
+    let action = bestAction(currentState);
     Snake.action(action);
-    var instantReward = Snake.loop();
-    var nextState = whichStateNow();
+    let instantReward = Snake.loop();
+    let nextState = whichStateNow();
 
     updateQTable(currentState, nextState, instantReward, action);
 
