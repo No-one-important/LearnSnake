@@ -13,7 +13,6 @@ let QLearning = (function () {
 
     let availableActions = ['up', 'down', 'left', 'right'];
 
-    let maxScore = 0;
     let score = 0;
     let missed = 0;
 
@@ -113,7 +112,6 @@ let QLearning = (function () {
         updateQTable(currentState, nextState, instantReward, action);
 
         if(instantReward > 0) score += Math.trunc(instantReward);
-        if(score > maxScore) maxScore = score
         if(instantReward < 0) missed += Math.trunc(instantReward);
 
     }
@@ -179,9 +177,6 @@ let QLearning = (function () {
             },
             missed: function () {
                 return missed;
-            },
-            maxScore: function () {
-                    return maxScore;
             }
         },
 

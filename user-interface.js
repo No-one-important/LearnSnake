@@ -54,7 +54,6 @@ let UserInterface = (function () {
     function loop () {
         infoScore.innerHTML = 'scored: <b>' + QLearning.info.score() + (QLearning.info.score() == 1 ? ' point' : ' points') + '</b>';
         infoMissed.innerHTML = 'died: <b>' + Math.abs(QLearning.info.missed()) + (Math.abs(QLearning.info.missed()) == 1 ? ' time' : ' times') + '</b>';
-        infoMaxScore.innerHTML = 'scored: <b>' + QLearning.info.maxScore() + (QLearning.info.maxScore() == 1 ? ' point' : ' points') + '</b>';
 
         QLearning.changeConst.LearningRate(0.01*rangerLR.value);
         QLearning.changeConst.DiscountFactor(0.01*rangerDF.value);
