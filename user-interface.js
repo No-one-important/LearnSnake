@@ -1,4 +1,4 @@
-var UserInterface = (function () {
+let UserInterface = (function () {
 
     Snake.init();
     Snake.setup.keyboard(false);
@@ -12,8 +12,8 @@ var UserInterface = (function () {
 
     /// EASTER EGG ///
     document.addEventListener('keyup', KonamiCode);
-    var konamiOrder = [38,38,40,40,37,39,37,39,66,65];
-    var konamiIndex = 0;
+    let konamiOrder = [38,38,40,40,37,39,37,39,66,65];
+    let konamiIndex = 0;
 
     function KonamiCode (evt) {
         if(konamiOrder[konamiIndex] == evt.keyCode){
@@ -35,18 +35,18 @@ var UserInterface = (function () {
     }
     ///
 
-    var btnTrain = document.getElementById('btnTrain');
-    var btnReset = document.getElementById('btnReset');
+    let btnTrain = document.getElementById('btnTrain');
+    let btnReset = document.getElementById('btnReset');
     btnTrain.addEventListener('click', speedFaster);
     btnReset.addEventListener('click', resetSnake);
 
-    var infoScore = document.getElementById('score');
-    var infoMissed = document.getElementById('missed');
+    let infoScore = document.getElementById('score');
+    let infoMissed = document.getElementById('missed');
 
-    var rangerLR = document.getElementById('rangeLR');
-    var rangerDF = document.getElementById('rangeDF');
-    var rangerRandom = document.getElementById('rangeRandom');
-    var checkboxFullSet = document.getElementById('fullSet');
+    let rangerLR = document.getElementById('rangeLR');
+    let rangerDF = document.getElementById('rangeDF');
+    let rangerRandom = document.getElementById('rangeRandom');
+    let checkboxFullSet = document.getElementById('fullSet');
 
     setInterval(loop, 100);
 

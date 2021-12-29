@@ -1,43 +1,43 @@
-var Snake = (function () {
+let Snake = (function () {
 
   const INITIAL_TAIL = 4;
-  var fixedTail = true;
+  let fixedTail = true;
 
-  var intervalID;
-  
-  var tileCount = 10;
-  var gridSize = 400/tileCount;
+  let intervalID;
+
+  let tileCount = 10;
+  let gridSize = 400/tileCount;
 
   const INITIAL_PLAYER = { x: Math.floor(tileCount / 2), y: Math.floor(tileCount / 2) };
-  
-  var velocity = { x:0, y:0 };
-  var player = { x: INITIAL_PLAYER.x, y: INITIAL_PLAYER.y };
 
-  var walls = false;
+  let velocity = { x:0, y:0 };
+  let player = { x: INITIAL_PLAYER.x, y: INITIAL_PLAYER.y };
 
-  var fruit = { x:1, y:1 };
+  let walls = false;
 
-  var trail = [];
-  var tail = INITIAL_TAIL;
+  let fruit = { x:1, y:1 };
 
-  var reward = 0;
-  var points = 0;
-  var pointsMax = 0;
+  let trail = [];
+  let tail = INITIAL_TAIL;
 
-  var ActionEnum = { 'none':0, 'up':1, 'down':2, 'left':3, 'right':4 };
+  let reward = 0;
+  let points = 0;
+  let pointsMax = 0;
+
+  let ActionEnum = { 'none':0, 'up':1, 'down':2, 'left':3, 'right':4 };
   Object.freeze(ActionEnum);
-  var lastAction = ActionEnum.none;
-  
+  let lastAction = ActionEnum.none;
+
   function setup () {
     canv = document.getElementById('gc');
     ctx = canv.getContext('2d');
     // document.addEventListener('keydown', keyPush);
     // document.body.style.backgroundColor='rgba(225,225,225,0.2)';
-    
+
     game.reset();
   }
 
-  var game = {
+  let game = {
 
     reset: function () {
       ctx.fillStyle = 'grey';
@@ -56,7 +56,7 @@ var Snake = (function () {
 
       trail = [];
       trail.push({ x: player.x, y: player.y });
-      // for(var i=0; i<tail; i++) trail.push({ x: player.x, y: player.y });
+      // for(let i=0; i<tail; i++) trail.push({ x: player.x, y: player.y });
     },
 
     action: {
@@ -126,24 +126,24 @@ var Snake = (function () {
         ctx.fillRect(0, canv.height-gridSize+1,canv.width,gridSize);
       }
 
-      var stopped = velocity.x == 0 && velocity.y == 0;
-      
+      let stopped = velocity.x == 0 && velocity.y == 0;
+
       player.x += velocity.x;
       player.y += velocity.y;
-      
+
       if (velocity.x == 0 && velocity.y == -1) lastAction = ActionEnum.up;
       if (velocity.x == 0 && velocity.y == 1) lastAction = ActionEnum.down;
       if (velocity.x == -1 && velocity.y == 0) lastAction = ActionEnum.left;
       if (velocity.x == 1 && velocity.y == 0) lastAction = ActionEnum.right;
-      
+
       ctx.fillStyle = 'rgba(40,40,40,0.8)';
       ctx.fillRect(0,0,canv.width,canv.height);
-      
+
       if(walls) HitWall();
       else DontHitWall();
-      
+
       // game.log();
-      
+
       if (!stopped){
         trail.push({x:player.x, y:player.y});
         while(trail.length > tail) trail.shift();
@@ -155,11 +155,11 @@ var Snake = (function () {
         ctx.fillText("(esc) reset", 24, 356);
         ctx.fillText("(space) pause", 24, 374);
       }
-      
+
       ctx.fillStyle = 'green';
-      for(var i=0; i<trail.length-1; i++) {
+      for(let i=0; i<trail.length-1; i++) {
         ctx.fillRect(trail[i].x * gridSize+1, trail[i].y * gridSize+1, gridSize-2, gridSize-2);
-        
+
         // console.debug(i + ' => player:' + player.x, player.y + ', trail:' + trail[i].x, trail[i].y);
         if (!stopped && trail[i].x == player.x && trail[i].y == player.y){
           game.reset();
@@ -167,16 +167,16 @@ var Snake = (function () {
         ctx.fillStyle = 'lime';
       }
       ctx.fillRect(trail[trail.length-1].x * gridSize+1, trail[trail.length-1].y * gridSize+1, gridSize-2, gridSize-2);
-      
+
       if (player.x == fruit.x && player.y == fruit.y) {
         if(!fixedTail) tail++;
         points++;
         if(points > pointsMax) pointsMax = points;
         reward = 1;
         game.RandomFruit();
-        // make sure new fruit didn't spawn in snake tail 
+        // make sure new fruit didn't spawn in snake tail
         while((function () {
-          for(var i=0; i<trail.length; i++) {
+          for(let i=0; i<trail.length; i++) {
             if (trail[i].x == fruit.x && trail[i].y == fruit.y) {
               game.RandomFruit();
               return true;
@@ -185,10 +185,10 @@ var Snake = (function () {
           return false;
         })());
       }
-      
+
       ctx.fillStyle = 'red';
       ctx.fillRect(fruit.x * gridSize+1, fruit.y * gridSize+1, gridSize-2, gridSize-2);
-      
+
       if(stopped) {
         ctx.fillStyle = 'rgba(250,250,250,0.8)';
         ctx.font = "small-caps bold 14px Helvetica";
@@ -203,34 +203,34 @@ var Snake = (function () {
       return reward;
     }
   }
-  
+
   function keyPush (evt) {
     switch(evt.keyCode) {
       case 37: //left
       game.action.left();
       evt.preventDefault();
       break;
-      
+
       case 38: //up
       game.action.up();
       evt.preventDefault();
       break;
-      
+
       case 39: //right
       game.action.right();
       evt.preventDefault();
       break;
-      
+
       case 40: //down
       game.action.down();
       evt.preventDefault();
       break;
-      
+
       case 32: //space
       Snake.pause();
       evt.preventDefault();
       break;
-      
+
       case 27: //esc
       game.reset();
       evt.preventDefault();
@@ -239,7 +239,7 @@ var Snake = (function () {
   }
 
   return {
-    
+
     init: function () {
       window.onload = setup;
     },
@@ -256,7 +256,7 @@ var Snake = (function () {
     stop: function () {
       clearInterval(intervalID);
     },
-    
+
     setup: {
       keyboard: function (state) {
         if (state) {
@@ -271,7 +271,7 @@ var Snake = (function () {
       },
       tileCount: function (size) {
         tileCount = size;
-        gridSize = 400 / tileCount;        
+        gridSize = 400 / tileCount;
       },
       fixedTail: function (state) {
         fixedTail = state;
@@ -297,7 +297,7 @@ var Snake = (function () {
           break;
       }
     },
-    
+
     pause: function () {
       velocity.x = 0;
       velocity.y = 0;
